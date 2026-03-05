@@ -1,0 +1,1058 @@
+<!--
+  Vitalscope — Single Page Website
+  Save as: index.html
+
+  Put your logo image next to this file and name it:
+    vitalscope-logo.png
+
+  (Or change the <img src="..."> below to match your filename.)
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#05090f" />
+
+    <title>Vitalscope — Your health, in focus</title>
+    <meta
+      name="description"
+      content="Vitalscope quietly observes your health signals and helps you understand patterns over time — without pressure, streaks, or noise."
+    />
+
+    <!-- Social cards (optional) -->
+    <meta property="og:title" content="Vitalscope — Your health, in focus" />
+    <meta
+      property="og:description"
+      content="Quietly observe your signals. Understand your patterns. No pressure."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+      :root {
+        --bg: #05090f;
+        --bg2: #070d16;
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.04);
+        --border: rgba(255, 255, 255, 0.10);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.64);
+        --soft: rgba(255, 255, 255, 0.76);
+
+        --teal: #4aebd8;
+        --cyan: #3cc7ff;
+        --violet: #7b61ff;
+
+        --shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+        --radius: 18px;
+        --radius2: 24px;
+        --max: 1100px;
+
+        --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background: radial-gradient(1200px 900px at 20% 0%, rgba(74, 235, 216, 0.08), transparent 55%),
+          radial-gradient(900px 700px at 95% 10%, rgba(123, 97, 255, 0.10), transparent 55%),
+          radial-gradient(900px 700px at 85% 90%, rgba(60, 199, 255, 0.08), transparent 60%),
+          linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        width: 100%;
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 28px 18px 60px;
+      }
+
+      /* Top nav */
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 4px 22px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand img {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+      }
+
+      .brand .name {
+        font-weight: 650;
+        letter-spacing: 0.2px;
+        font-size: 16px;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+
+      .brand .tag {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+        white-space: nowrap;
+      }
+
+      .navlinks {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .navlinks a {
+        font-size: 13px;
+        color: var(--soft);
+        padding: 9px 10px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: transparent;
+      }
+
+      .navlinks a:hover {
+        border-color: rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: linear-gradient(
+          135deg,
+          rgba(74, 235, 216, 0.18),
+          rgba(123, 97, 255, 0.14)
+        );
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      }
+
+      .cta:hover {
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      /* Hero */
+      .hero {
+        margin-top: 6px;
+        padding: 26px 22px;
+        border-radius: var(--radius2);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(700px 420px at 20% 10%, rgba(74, 235, 216, 0.16), transparent 55%),
+          radial-gradient(680px 380px at 85% 0%, rgba(123, 97, 255, 0.18), transparent 60%),
+          radial-gradient(680px 380px at 85% 90%, rgba(60, 199, 255, 0.14), transparent 60%);
+        pointer-events: none;
+        opacity: 0.85;
+      }
+
+      .heroInner {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 22px;
+        align-items: center;
+      }
+
+      @media (max-width: 860px) {
+        .heroInner {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .kicker {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--soft);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(0, 0, 0, 0.14);
+        padding: 8px 12px;
+        border-radius: 999px;
+        width: fit-content;
+        backdrop-filter: blur(6px);
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--teal), var(--violet));
+        box-shadow: 0 0 18px rgba(74, 235, 216, 0.35);
+      }
+
+      h1 {
+        margin: 14px 0 10px;
+        font-size: clamp(30px, 4.2vw, 44px);
+        line-height: 1.08;
+        letter-spacing: -0.6px;
+      }
+
+      .subhead {
+        margin: 0;
+        max-width: 55ch;
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--soft);
+      }
+
+      .heroActions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(0, 0, 0, 0.18);
+        color: var(--text);
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .btn:hover {
+        border-color: rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .btnPrimary {
+        border-color: rgba(74, 235, 216, 0.30);
+        background: linear-gradient(
+          135deg,
+          rgba(74, 235, 216, 0.22),
+          rgba(123, 97, 255, 0.16)
+        );
+      }
+
+      .btnPrimary:hover {
+        border-color: rgba(74, 235, 216, 0.44);
+      }
+
+      .mini {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .mini span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .mini i {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      /* Right hero card */
+      .heroCard {
+        border-radius: var(--radius2);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(0, 0, 0, 0.16);
+        padding: 16px;
+        backdrop-filter: blur(10px);
+      }
+
+      .logoBig {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 10px 8px;
+      }
+
+      .logoBig img {
+        width: min(240px, 62vw);
+        height: auto;
+        object-fit: contain;
+      }
+
+      .heroList {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+
+      .heroList li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 10px 12px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+      }
+
+      .check {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 auto;
+        border-radius: 6px;
+        background: linear-gradient(135deg, rgba(74, 235, 216, 0.38), rgba(123, 97, 255, 0.26));
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        position: relative;
+        margin-top: 2px;
+      }
+
+      .check::after {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 4px;
+        width: 7px;
+        height: 4px;
+        border-left: 2px solid rgba(255, 255, 255, 0.9);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+        transform: rotate(-45deg);
+        opacity: 0.85;
+      }
+
+      .heroList b {
+        display: block;
+        font-size: 13px;
+        font-weight: 650;
+        margin-bottom: 3px;
+      }
+
+      .heroList p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.35;
+      }
+
+      /* Sections */
+      section {
+        margin-top: 26px;
+      }
+
+      .sectionTitle {
+        font-size: 14px;
+        color: var(--soft);
+        letter-spacing: 0.2px;
+        margin: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sectionTitle .line {
+        height: 1px;
+        flex: 1 1 auto;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent);
+      }
+
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      @media (max-width: 860px) {
+        .grid3 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 16px;
+      }
+
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        letter-spacing: -0.1px;
+      }
+
+      .card p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.55;
+        color: var(--muted);
+      }
+
+      .pillRow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .pill {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(0, 0, 0, 0.14);
+        color: var(--soft);
+        font-size: 12px;
+      }
+
+      .pill .spark {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--teal), var(--cyan));
+        opacity: 0.9;
+      }
+
+      /* FAQ */
+      .faq {
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 12px 14px;
+      }
+
+      summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 14px;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .chev {
+        width: 14px;
+        height: 14px;
+        border-right: 2px solid rgba(255, 255, 255, 0.55);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.55);
+        transform: rotate(45deg);
+        transition: transform 180ms ease;
+        margin-top: -2px;
+        flex: 0 0 auto;
+      }
+
+      details[open] .chev {
+        transform: rotate(225deg);
+      }
+
+      .faqBody {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .faqBody a {
+        color: rgba(74, 235, 216, 0.9);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      /* Footer */
+      footer {
+        margin-top: 30px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .footerLinks {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .footerLinks a {
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .footerLinks a:hover {
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Modal */
+      .modalBackdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        z-index: 100;
+      }
+
+      .modalBackdrop.open {
+        display: flex;
+      }
+
+      .modal {
+        width: 100%;
+        max-width: 520px;
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: linear-gradient(180deg, rgba(20, 28, 44, 0.92), rgba(10, 14, 22, 0.92));
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .modalHeader {
+        padding: 16px 16px 10px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .modalHeader h4 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: -0.2px;
+      }
+
+      .modalHeader p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.4;
+      }
+
+      .closeX {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .closeX:hover {
+        border-color: rgba(255, 255, 255, 0.24);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .modalBody {
+        padding: 0 16px 16px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      label {
+        color: var(--soft);
+        font-size: 12px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(0, 0, 0, 0.18);
+        color: var(--text);
+        outline: none;
+        font-size: 14px;
+      }
+
+      input:focus {
+        border-color: rgba(74, 235, 216, 0.38);
+        box-shadow: 0 0 0 4px rgba(74, 235, 216, 0.10);
+      }
+
+      .modalActions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+
+      .note {
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 11.5px;
+        line-height: 1.45;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header class="nav">
+        <a class="brand" href="#top" aria-label="Vitalscope home">
+          <img src="vitalscope-logo.png" alt="Vitalscope logo" />
+          <div style="min-width: 0">
+            <div class="name">Vitalscope™</div>
+            <div class="tag">Your health, in focus</div>
+          </div>
+        </a>
+
+        <nav class="navlinks" aria-label="Primary">
+          <a href="#what">What it is</a>
+          <a href="#how">How it works</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#faq">FAQ</a>
+          <a class="cta" href="#early" id="openWaitlist">
+            <span>Early access</span>
+            <span style="opacity: 0.7">→</span>
+          </a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <!-- HERO -->
+        <div class="hero">
+          <div class="heroInner">
+            <div>
+              <div class="kicker">
+                <span class="dot" aria-hidden="true"></span>
+                Calm insights from real-life signals
+              </div>
+
+              <h1>Understand your patterns—without pressure.</h1>
+
+              <p class="subhead">
+                Vitalscope quietly observes signals like sleep, movement, heart rate, glucose and
+                more. Over time it learns what “steady” looks like for you—then helps you notice
+                gentle shifts in rhythm.
+              </p>
+
+              <div class="heroActions">
+                <button class="btn btnPrimary" type="button" id="openWaitlist2">
+                  Request early access
+                </button>
+                <a class="btn" href="#faq">Read the FAQ</a>
+              </div>
+
+              <div class="mini" aria-label="Highlights">
+                <span><i aria-hidden="true"></i> No streaks</span>
+                <span><i aria-hidden="true"></i> No alarms</span>
+                <span><i aria-hidden="true"></i> No “perfect days”</span>
+              </div>
+            </div>
+
+            <aside class="heroCard" aria-label="Vitalscope overview">
+              <div class="logoBig">
+                <img src="vitalscope-logo.png" alt="Vitalscope mark" />
+              </div>
+
+              <ul class="heroList">
+                <li>
+                  <span class="check" aria-hidden="true"></span>
+                  <div>
+                    <b>Baseline-first</b>
+                    <p>It starts by learning your normal before suggesting anything.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true"></span>
+                  <div>
+                    <b>Pattern-aware</b>
+                    <p>Focus on trends and context, not one-off spikes.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true"></span>
+                  <div>
+                    <b>Quiet by design</b>
+                    <p>A gentle experience—useful, but never pushy.</p>
+                  </div>
+                </li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+
+        <!-- WHAT -->
+        <section id="what" aria-label="What Vitalscope is">
+          <div class="sectionTitle">
+            <span>What Vitalscope is</span>
+            <span class="line" aria-hidden="true"></span>
+          </div>
+
+          <div class="grid3">
+            <div class="card">
+              <h3>Not a score</h3>
+              <p>
+                Vitalscope doesn’t try to grade your day. It helps you understand how your system is
+                moving—so you can respond with awareness.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>A quiet observer</h3>
+              <p>
+                We focus on signals that already exist in your health data, and surface calm,
+                readable insights as patterns emerge.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>Built for real life</h3>
+              <p>
+                Missed days happen. Sleep varies. Stress happens. Vitalscope is designed to stay
+                supportive and steady through it all.
+              </p>
+            </div>
+          </div>
+
+          <div class="pillRow" aria-label="Signals">
+            <span class="pill"><span class="spark" aria-hidden="true"></span> Sleep</span>
+            <span class="pill"><span class="spark" aria-hidden="true"></span> Heart rate</span>
+            <span class="pill"><span class="spark" aria-hidden="true"></span> Activity</span>
+            <span class="pill"><span class="spark" aria-hidden="true"></span> Glucose</span>
+            <span class="pill"><span class="spark" aria-hidden="true"></span> Weight</span>
+            <span class="pill"><span class="spark" aria-hidden="true"></span> Blood pressure</span>
+          </div>
+        </section>
+
+        <!-- HOW -->
+        <section id="how" aria-label="How it works">
+          <div class="sectionTitle">
+            <span>How it works</span>
+            <span class="line" aria-hidden="true"></span>
+          </div>
+
+          <div class="grid3">
+            <div class="card">
+              <h3>1) Connect your data</h3>
+              <p>
+                Vitalscope reads signals from Apple Health or Health Connect—so it can use the data
+                your devices already collect.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>2) Learn your baseline</h3>
+              <p>
+                Over time, Vitalscope learns what “steady” looks like for you. The more consistent
+                your data, the clearer the picture becomes.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>3) Notice gentle shifts</h3>
+              <p>
+                When patterns drift, Vitalscope highlights it with context—so you can take a calmer,
+                more informed look at what might be happening.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRIVACY -->
+        <section id="privacy" aria-label="Privacy">
+          <div class="sectionTitle">
+            <span>Privacy</span>
+            <span class="line" aria-hidden="true"></span>
+          </div>
+
+          <div class="card">
+            <h3>Designed to be private</h3>
+            <p>
+              Your health data should feel safe. Vitalscope is designed around on-device usage and
+              a calm, minimal approach to collection. We don’t sell personal health information.
+            </p>
+
+            <div class="pillRow" style="margin-top: 14px">
+              <span class="pill"><span class="spark" aria-hidden="true"></span> No selling data</span>
+              <span class="pill"><span class="spark" aria-hidden="true"></span> Minimal permissions</span>
+              <span class="pill"><span class="spark" aria-hidden="true"></span> You stay in control</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" aria-label="FAQ">
+          <div class="sectionTitle">
+            <span>FAQ</span>
+            <span class="line" aria-hidden="true"></span>
+          </div>
+
+          <div class="faq">
+            <details>
+              <summary>
+                Does Vitalscope replace medical advice?
+                <span class="chev" aria-hidden="true"></span>
+              </summary>
+              <div class="faqBody">
+                No. Vitalscope is for awareness and reflection. It can help you notice patterns, but
+                it isn’t a medical device and doesn’t diagnose conditions. If something feels
+                concerning, it’s always okay to speak with a clinician.
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                Do I need a wearable?
+                <span class="chev" aria-hidden="true"></span>
+              </summary>
+              <div class="faqBody">
+                Not necessarily. If your phone or connected apps write data to Apple Health or
+                Health Connect, Vitalscope can use it. Wearables can improve detail, but they’re
+                optional.
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                How long does it take to learn my baseline?
+                <span class="chev" aria-hidden="true"></span>
+              </summary>
+              <div class="faqBody">
+                Often you’ll see useful patterns within 1–2 weeks. Some insights become clearer with
+                a bit more time, especially if your data is irregular.
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                Will it work with Samsung Health, Fitbit, Garmin?
+                <span class="chev" aria-hidden="true"></span>
+              </summary>
+              <div class="faqBody">
+                If your provider syncs into Health Connect (Android) or Apple Health (iOS), then yes.
+                Vitalscope reads what’s available in those hubs.
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                Why is the tone so “calm” compared to other apps?
+                <span class="chev" aria-hidden="true"></span>
+              </summary>
+              <div class="faqBody">
+                Many health tools unintentionally add pressure. Vitalscope is built to be steady and
+                non-anxiety-inducing—more like a quiet mirror than a coach.
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                Is my data private?
+                <span class="chev" aria-hidden="true"></span>
+              </summary>
+              <div class="faqBody">
+                Yes—Vitalscope is designed to minimize collection and keep control with you. We do
+                not sell personal health information. (If you want, we can add a full Privacy Policy
+                page later, but this one-page site keeps it simple for now.)
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- EARLY ACCESS -->
+        <section id="early" aria-label="Early access">
+          <div class="sectionTitle">
+            <span>Early access</span>
+            <span class="line" aria-hidden="true"></span>
+          </div>
+
+          <div class="card">
+            <h3>Want to be part of the early group?</h3>
+            <p>
+              If you’d like updates or a test invite, leave your email. We’ll only use it for
+              Vitalscope-related messages, and we’ll keep it light.
+            </p>
+
+            <div class="heroActions" style="margin-top: 14px">
+              <button class="btn btnPrimary" type="button" id="openWaitlist3">
+                Request early access
+              </button>
+              <a class="btn" href="#top">Back to top</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div>© <span id="year"></span> Vitalscope™. Your health, in focus.</div>
+        <div class="footerLinks">
+          <a href="#privacy">Privacy</a>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:hello@vitalscope.app">Contact</a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Waitlist modal (front-end only; wire to your backend later) -->
+    <div class="modalBackdrop" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal" role="document" aria-label="Request early access">
+        <div class="modalHeader">
+          <div>
+            <h4>Request early access</h4>
+            <p>
+              Leave an email and we’ll reach out when invites are available. No pressure, no spam.
+            </p>
+          </div>
+          <button class="closeX" type="button" id="closeModal" aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div class="modalBody">
+          <form id="waitlistForm">
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div class="modalActions">
+              <button class="btn btnPrimary" type="submit">Send</button>
+              <button class="btn" type="button" id="closeModal2">Not now</button>
+            </div>
+
+            <div class="note" id="formNote">
+              This demo form doesn’t submit anywhere yet. When you’re ready, connect it to your
+              backend (Laravel) or a simple email capture service.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // tiny helpers
+      const $ = (id) => document.getElementById(id);
+
+      // year
+      $("year").textContent = new Date().getFullYear();
+
+      // modal controls
+      const modal = $("modal");
+      const openButtons = ["openWaitlist", "openWaitlist2", "openWaitlist3"].map((id) => $(id));
+      const closeButtons = ["closeModal", "closeModal2"].map((id) => $(id));
+
+      function openModal() {
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        // focus email for convenience
+        setTimeout(() => $("email")?.focus(), 50);
+      }
+
+      function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+      }
+
+      openButtons.forEach((b) => b && b.addEventListener("click", (e) => (e.preventDefault(), openModal())));
+      closeButtons.forEach((b) => b && b.addEventListener("click", closeModal));
+
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      // demo submit
+      $("waitlistForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = $("email").value.trim();
+        if (!email) return;
+
+        $("formNote").textContent =
+          "Thanks — noted. (This is still a front-end demo; hook this to your backend when ready.)";
+        $("email").value = "";
+        setTimeout(closeModal, 700);
+      });
+    </script>
+  </body>
+</html>
