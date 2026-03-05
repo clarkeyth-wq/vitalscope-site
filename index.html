@@ -1,9 +1,11 @@
 <!--
-  Vitalscope — Single Page Website (App-style)
+  Vitalscope — Single Page Website (Today theme)
   Save as: index.html
 
   Put your logo image next to this file and name it:
     vitalscope-logo.png
+
+  (Or change the <img src="..."> below.)
 -->
 <!doctype html>
 <html lang="en">
@@ -15,910 +17,1078 @@
     <title>Vitalscope — Your health, in focus</title>
     <meta
       name="description"
-      content="Vitalscope quietly observes your health signals and helps you understand patterns over time — without pressure."
+      content="Vitalscope quietly observes your health signals and helps you understand patterns over time — without pressure, streaks, or noise."
     />
 
+    <!-- Social cards -->
     <meta property="og:title" content="Vitalscope — Your health, in focus" />
     <meta
       property="og:description"
-      content="Calm insights from real-life signals. Understand patterns without pressure."
+      content="Meaning first, numbers second. A calm, next-generation view of your daily rhythm."
     />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
 
     <style>
-      :root {
-        /* App-like palette */
-        --bg: #05090f;
-        --bg2: #070c12;
-        --panel: rgba(255, 255, 255, 0.05);
-        --panel2: rgba(255, 255, 255, 0.035);
-        --border: rgba(255, 255, 255, 0.085);
+      :root{
+        --bg:#05090f;
 
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.62);
-        --soft: rgba(255, 255, 255, 0.74);
+        /* from your Today screen */
+        --card: rgba(255,255,255,.042);
+        --card2: rgba(255,255,255,.032);
+        --border: rgba(255,255,255,.055);
+        --border-soft: rgba(255,255,255,.045);
 
-        --teal: rgba(74, 235, 216, 0.95);
-        --teal2: rgba(74, 235, 216, 0.22);
+        --text: rgba(240,245,252,.92);
+        --muted: rgba(225,232,242,.68);
+        --faint: rgba(225,232,242,.45);
 
-        --shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
-        --r: 18px;
-        --r2: 26px;
+        --accent: rgba(74,235,216,.95);
+        --accent-soft: rgba(74,235,216,.11);
+        --accent-border: rgba(74,235,216,.30);
+        --accent-glow: rgba(74,235,216,.07);
+
+        --radius-lg: 22px;
+        --radius-md: 20px;
+        --radius-sm: 18px;
+
+        --shadow: 0 18px 60px rgba(0,0,0,.38);
+        --shadow-soft: 0 12px 40px rgba(0,0,0,.26);
+
         --max: 1120px;
-
-        --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-          "Apple Color Emoji", "Segoe UI Emoji";
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
-        height: 100%;
-      }
-
-      body {
-        margin: 0;
-        font-family: var(--font);
+      *{ box-sizing:border-box; }
+      html,body{ height:100%; }
+      body{
+        margin:0;
+        background: var(--bg);
         color: var(--text);
-        background: radial-gradient(1200px 900px at 22% -10%, rgba(74, 235, 216, 0.08), transparent 60%),
-          radial-gradient(900px 700px at 100% 0%, rgba(123, 97, 255, 0.10), transparent 55%),
-          linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        letter-spacing: -0.01em;
+        overflow-x:hidden;
       }
 
-      a {
-        color: inherit;
-        text-decoration: none;
+      a{ color:inherit; text-decoration:none; }
+      button, input { font: inherit; }
+
+      /* subtle background grain + vignette */
+      .bg{
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -2;
+        background:
+          radial-gradient(1200px 700px at 70% 0%, rgba(74,235,216,.08), transparent 55%),
+          radial-gradient(1000px 700px at 0% 35%, rgba(255,255,255,.035), transparent 60%),
+          radial-gradient(900px 600px at 80% 90%, rgba(255,255,255,.02), transparent 60%),
+          radial-gradient(1200px 900px at 50% 120%, rgba(0,0,0,.35), transparent 60%);
+      }
+      .grain{
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        opacity: .10;
+        mix-blend-mode: overlay;
+        background-image:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
       }
 
-      .wrap {
+      .wrap{
+        width: 100%;
         max-width: var(--max);
         margin: 0 auto;
-        padding: 22px 16px 70px;
+        padding: 22px 16px 80px;
       }
 
-      /* Top bar (app-style) */
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+      /* top nav */
+      .nav{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
         gap: 14px;
-        padding: 8px 2px 18px;
+        padding: 10px 4px 18px;
       }
-
-      .brand {
-        display: flex;
-        align-items: center;
+      .brand{
+        display:flex;
+        align-items:center;
         gap: 12px;
-        min-width: 0;
+        min-width: 220px;
       }
 
-      .brandMark {
-        width: 40px;
-        height: 40px;
+      /* Pulse Ring mark */
+      .mark{
+        position: relative;
+        width: 44px;
+        height: 44px;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.03);
-        display: grid;
-        place-items: center;
-        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-        overflow: hidden;
+        display:grid;
+        place-items:center;
       }
-
-      .brandMark img {
-        width: 28px; /* small app-like mark */
-        height: 28px;
+      .mark::before{
+        content:"";
+        position:absolute;
+        inset:-10px;
+        border-radius:999px;
+        border: 1px solid rgba(74,235,216,.10);
+      }
+      .mark::after{
+        content:"";
+        position:absolute;
+        inset:-4px;
+        border-radius:999px;
+        border: 1px solid rgba(74,235,216,.18);
+      }
+      .markCore{
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.015);
+        border: 1px solid rgba(255,255,255,.05);
+        overflow:hidden;
+        display:grid;
+        place-items:center;
+      }
+      .markCore img{
+        width: 30px;
+        height: 30px;
+        opacity: .92;
         object-fit: contain;
-        filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
       }
 
-      .brandText {
-        display: grid;
-        gap: 2px;
-        min-width: 0;
+      .brandText{
+        display:flex;
+        flex-direction:column;
+        gap: 1px;
+        line-height:1.05;
       }
-
-      .brandText .name {
-        font-weight: 750;
-        letter-spacing: 0.2px;
-        font-size: 16px;
-        line-height: 1.1;
-        white-space: nowrap;
+      .brandName{
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        font-size: 14px;
       }
-
-      .brandText .tag {
-        font-size: 12px;
+      .brandTag{
         color: var(--muted);
-        white-space: nowrap;
+        font-weight: 800;
+        font-size: 12px;
       }
 
-      .nav {
-        display: flex;
-        align-items: center;
+      .navLinks{
+        display:flex;
+        align-items:center;
         gap: 10px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
+        flex-wrap:wrap;
+        justify-content:flex-end;
       }
 
-      .chipLink {
-        font-size: 13px;
-        color: var(--soft);
+      .pill{
+        display:inline-flex;
+        align-items:center;
+        gap: 8px;
         padding: 9px 12px;
         border-radius: 999px;
-        border: 1px solid transparent;
-        background: transparent;
-      }
-
-      .chipLink:hover {
-        border-color: rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.04);
-      }
-
-      .chipCTA {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(74, 235, 216, 0.26);
-        background: linear-gradient(135deg, rgba(74, 235, 216, 0.18), rgba(255, 255, 255, 0.03));
-        box-shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
-      }
-
-      .chipCTA:hover {
-        border-color: rgba(74, 235, 216, 0.40);
-      }
-
-      /* Layout */
-      .layout {
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 16px;
-        align-items: start;
-      }
-
-      @media (max-width: 980px) {
-        .layout {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* App-style cards */
-      .card {
-        border-radius: var(--r2);
-        border: 1px solid var(--border);
-        background: linear-gradient(180deg, var(--panel), var(--panel2));
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .cardInner {
-        padding: 18px 18px 16px;
-      }
-
-      .cardHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 14px 18px 0;
-      }
-
-      .cardHeader .title {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.82);
-        font-weight: 650;
-        letter-spacing: 0.2px;
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(0, 0, 0, 0.18);
-        color: rgba(255, 255, 255, 0.80);
+        background: rgba(255,255,255,.025);
+        border: 1px solid var(--border-soft);
+        color: var(--muted);
+        font-weight: 900;
         font-size: 12px;
-        white-space: nowrap;
+        transition: transform .16s ease, opacity .16s ease, border-color .16s ease;
+        user-select:none;
       }
-
-      .badgeDot {
+      .pill:hover{
+        transform: translateY(-1px);
+        border-color: rgba(255,255,255,.08);
+        opacity: .98;
+      }
+      .dot{
         width: 8px;
         height: 8px;
         border-radius: 99px;
-        background: var(--teal);
-        box-shadow: 0 0 18px rgba(74, 235, 216, 0.35);
+        background: var(--accent);
+        box-shadow: 0 0 18px rgba(74,235,216,.20);
       }
 
-      /* Hero block (app-like “Good afternoon” feel) */
-      .greeting {
-        display: grid;
-        gap: 6px;
-        padding: 6px 2px 8px;
+      /* hero */
+      .hero{
+        position: relative;
+        display:grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap: 14px;
+        align-items: stretch;
+        margin-top: 6px;
+      }
+      @media (max-width: 960px){
+        .hero{ grid-template-columns: 1fr; }
       }
 
-      .greeting h1 {
-        margin: 0;
-        font-size: clamp(34px, 4vw, 52px);
-        line-height: 1.1;
-        letter-spacing: -0.7px;
+      .panel{
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        overflow:hidden;
       }
 
-      .greeting p {
-        margin: 0;
-        max-width: 62ch;
-        font-size: 18px;
-        line-height: 1.65;
-        color: var(--soft);
-      }
-
-      .actionsRow {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 12px;
-      }
-
-      .btn {
-        appearance: none;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(0, 0, 0, 0.18);
-        color: var(--text);
-        padding: 12px 14px;
-        border-radius: 14px;
-        font-size: 15px;
-        cursor: pointer;
-      }
-
-      .btn:hover {
-        border-color: rgba(255, 255, 255, 0.22);
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      .btnPrimary {
-        border-color: rgba(74, 235, 216, 0.30);
-        background: linear-gradient(135deg, rgba(74, 235, 216, 0.22), rgba(255, 255, 255, 0.03));
-      }
-
-      .btnPrimary:hover {
-        border-color: rgba(74, 235, 216, 0.45);
-      }
-
-      .pillRow {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 12px;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 9px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.03);
-        color: rgba(255, 255, 255, 0.78);
-        font-size: 13px;
-      }
-
-      .pill i {
-        width: 6px;
-        height: 6px;
-        border-radius: 99px;
-        background: rgba(255, 255, 255, 0.35);
-      }
-
-      /* Stacked “tiles” like the app */
-      .stack {
-        display: grid;
-        gap: 12px;
-      }
-
-      .tileTitle {
-        font-size: 22px;
-        font-weight: 750;
-        letter-spacing: -0.2px;
-        margin: 0 0 8px;
-      }
-
-      .tileBody {
-        margin: 0;
-        color: var(--soft);
-        font-size: 15px;
-        line-height: 1.65;
-      }
-
-      .divider {
-        height: 1px;
-        background: rgba(255, 255, 255, 0.07);
-        margin: 14px 0;
-      }
-
-      .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      .chip {
-        padding: 10px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(0, 0, 0, 0.20);
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.78);
-      }
-
-      .chipStrong {
-        border-color: rgba(74, 235, 216, 0.22);
-        background: rgba(74, 235, 216, 0.10);
-      }
-
-      /* FAQ */
-      .faq {
-        display: grid;
-        gap: 10px;
-      }
-
-      details {
-        border-radius: var(--r);
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.035);
-        padding: 12px 14px;
-      }
-
-      summary {
-        list-style: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        font-size: 16px;
-        color: var(--text);
-        font-weight: 650;
-      }
-
-      summary::-webkit-details-marker {
-        display: none;
-      }
-
-      .chev {
-        width: 14px;
-        height: 14px;
-        border-right: 2px solid rgba(255, 255, 255, 0.55);
-        border-bottom: 2px solid rgba(255, 255, 255, 0.55);
-        transform: rotate(45deg);
-        transition: transform 180ms ease;
-        margin-top: -2px;
-        flex: 0 0 auto;
-      }
-
-      details[open] .chev {
-        transform: rotate(225deg);
-      }
-
-      .faqBody {
-        margin-top: 10px;
-        color: var(--muted);
-        font-size: 15px;
-        line-height: 1.7;
-      }
-
-      /* Footer */
-      footer {
-        margin-top: 18px;
-        padding-top: 18px;
-        border-top: 1px solid rgba(255, 255, 255, 0.10);
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      .footerLinks {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-
-      .footerLinks a {
-        padding: 9px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .footerLinks a:hover {
-        border-color: rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      /* Modal (same, app-like) */
-      .modalBackdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
-        display: none;
-        align-items: center;
-        justify-content: center;
+      .heroLeft{
         padding: 18px;
-        z-index: 100;
+        position: relative;
+      }
+      .lensGlowA{
+        position:absolute;
+        width: 560px;
+        height: 560px;
+        border-radius: 999px;
+        top: -260px;
+        left: -180px;
+        background: var(--accent-glow);
+        pointer-events:none;
+      }
+      .lensGlowB{
+        position:absolute;
+        width: 420px;
+        height: 420px;
+        border-radius: 999px;
+        bottom: -260px;
+        right: -240px;
+        background: rgba(255,255,255,.018);
+        pointer-events:none;
       }
 
-      .modalBackdrop.open {
-        display: flex;
+      .eyebrow{
+        color: var(--faint);
+        font-weight: 900;
+        font-size: 12px;
+        letter-spacing: .02em;
       }
-
-      .modal {
-        width: 100%;
-        max-width: 520px;
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: linear-gradient(180deg, rgba(18, 24, 38, 0.94), rgba(10, 14, 22, 0.94));
-        box-shadow: var(--shadow);
-        overflow: hidden;
+      h1{
+        margin: 10px 0 8px;
+        font-size: clamp(30px, 4.2vw, 44px);
+        line-height: 1.06;
+        font-weight: 900;
+        letter-spacing: -0.05em;
       }
-
-      .modalHeader {
-        padding: 16px 16px 10px;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .modalHeader h4 {
+      .subhead{
         margin: 0;
-        font-size: 16px;
-        letter-spacing: -0.2px;
-      }
-
-      .modalHeader p {
-        margin: 6px 0 0;
         color: var(--muted);
+        font-weight: 700;
         font-size: 14px;
-        line-height: 1.5;
+        line-height: 1.55;
+        max-width: 62ch;
       }
 
-      .closeX {
-        appearance: none;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.04);
-        color: var(--text);
-        border-radius: 12px;
-        padding: 8px 10px;
-        cursor: pointer;
-        font-size: 14px;
-      }
-
-      .closeX:hover {
-        border-color: rgba(255, 255, 255, 0.24);
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .modalBody {
-        padding: 0 16px 16px;
-      }
-
-      .field {
-        display: grid;
-        gap: 8px;
-        margin-top: 12px;
-      }
-
-      label {
-        color: var(--soft);
-        font-size: 13px;
-      }
-
-      input {
-        width: 100%;
-        padding: 12px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(0, 0, 0, 0.18);
-        color: var(--text);
-        outline: none;
-        font-size: 15px;
-      }
-
-      input:focus {
-        border-color: rgba(74, 235, 216, 0.38);
-        box-shadow: 0 0 0 4px rgba(74, 235, 216, 0.10);
-      }
-
-      .modalActions {
-        display: flex;
+      .ctaRow{
+        display:flex;
+        align-items:center;
         gap: 10px;
         flex-wrap: wrap;
         margin-top: 14px;
       }
-
-      .note {
-        margin-top: 10px;
-        color: rgba(255, 255, 255, 0.52);
-        font-size: 12.5px;
-        line-height: 1.55;
+      .btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--text);
+        font-weight: 900;
+        font-size: 13px;
+        transition: transform .16s ease, filter .16s ease, opacity .16s ease;
+        user-select:none;
+      }
+      .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+      .btn:active{ transform: translateY(0px); opacity: .92; }
+      .btnSecondary{
+        border: 1px solid var(--border-soft);
+        background: rgba(255,255,255,.022);
+        color: var(--muted);
       }
 
-      /* smooth anchor scrolling */
-      html {
-        scroll-behavior: smooth;
+      .micro{
+        margin-top: 10px;
+        color: var(--faint);
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      /* right: "today preview" */
+      .heroRight{
+        padding: 14px;
+        display:flex;
+        flex-direction:column;
+        gap: 10px;
+      }
+
+      .miniHeader{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap: 12px;
+      }
+      .miniGreet{
+        font-weight: 900;
+        font-size: 16px;
+        margin: 2px 0 0;
+      }
+      .miniDate{
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      .miniPill{
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.025);
+        border: 1px solid var(--border-soft);
+        color: var(--muted);
+        font-weight: 900;
+        font-size: 12px;
+        display:flex;
+        align-items:center;
+        gap: 8px;
+        white-space: nowrap;
+      }
+
+      .miniInsight{
+        background: var(--card2);
+        border: 1px solid var(--border-soft);
+        border-radius: 18px;
+        padding: 12px;
+        position: relative;
+        overflow:hidden;
+      }
+      .miniInsight::before{
+        content:"";
+        position:absolute;
+        width: 220px;
+        height: 160px;
+        border-radius: 160px;
+        bottom: -60px;
+        left: -60px;
+        background: rgba(74,235,216,.07);
+        pointer-events:none;
+      }
+      .miniTitle{
+        font-weight: 900;
+        font-size: 12px;
+        color: var(--faint);
+        margin: 0 0 6px;
+      }
+      .miniBody{
+        margin: 0;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .divider{
+        height: 1px;
+        background: rgba(255,255,255,.06);
+        margin: 12px 0 10px;
+      }
+      .miniMetaRow{
+        display:flex;
+        align-items:baseline;
+        justify-content:space-between;
+        gap: 10px;
+      }
+      .miniMetaBig{
+        font-weight: 900;
+        font-size: 14px;
+      }
+      .miniMetaSub{
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      /* tiles */
+      .tiles{
+        display:grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 10px;
+      }
+      @media (max-width: 520px){
+        .tiles{ grid-template-columns: 1fr; }
+      }
+
+      .tile{
+        position: relative;
+        background: var(--card2);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        padding: 12px;
+        overflow:hidden;
+        min-height: 118px;
+      }
+      .tile .sweepA{
+        position:absolute;
+        bottom: -34px;
+        left: -36px;
+        width: 220px;
+        height: 120px;
+        border-radius: 140px;
+        background: rgba(74,235,216,.07);
+        pointer-events:none;
+      }
+      .tile .sweepB{
+        position:absolute;
+        top: -60px;
+        right: -70px;
+        width: 200px;
+        height: 140px;
+        border-radius: 140px;
+        background: rgba(255,255,255,.018);
+        pointer-events:none;
+      }
+      .tileTop{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 8px;
+      }
+      .tileTitle{
+        color: var(--muted);
+        font-weight: 900;
+        font-size: 12px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .tileBig{
+        margin-top: 10px;
+        font-weight: 900;
+        font-size: 22px;
+        letter-spacing: -0.03em;
+      }
+      .tileSub{
+        margin-top: 6px;
+        color: var(--faint);
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .tileRange{
+        margin-top: 6px;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+      .barTrack{
+        margin-top: 10px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.055);
+        overflow:hidden;
+      }
+      .barFill{
+        height: 8px;
+        border-radius: 999px;
+        width: 60%;
+        background: var(--accent);
+      }
+
+      /* sections */
+      .section{
+        margin-top: 14px;
+      }
+      .sectionHead{
+        display:flex;
+        align-items:flex-end;
+        justify-content:space-between;
+        gap: 10px;
+        margin: 18px 0 10px;
+      }
+      .h2{
+        margin: 0;
+        font-weight: 900;
+        font-size: 14px;
+        letter-spacing: -0.02em;
+      }
+      .kicker{
+        margin: 0;
+        color: var(--faint);
+        font-weight: 900;
+        font-size: 12px;
+      }
+
+      .grid2{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 900px){
+        .grid2{ grid-template-columns: 1fr; }
+      }
+
+      .card{
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 16px;
+      }
+
+      .cardAlt{
+        background: var(--card2);
+        border: 1px solid var(--border-soft);
+      }
+
+      .rowTop{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 10px;
+      }
+      .title{
+        margin:0;
+        font-weight: 900;
+        font-size: 14px;
+      }
+
+      .body{
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .chips{
+        display:flex;
+        flex-wrap:wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .chip{
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.025);
+        border: 1px solid var(--border-soft);
+        font-weight: 800;
+        font-size: 12px;
+        color: var(--text);
+      }
+
+      .quote{
+        color: var(--faint);
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .featureList{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      @media (max-width: 720px){
+        .featureList{ grid-template-columns: 1fr; }
+      }
+
+      .feature{
+        background: rgba(255,255,255,.02);
+        border: 1px solid var(--border-soft);
+        border-radius: 18px;
+        padding: 12px;
+        position: relative;
+        overflow:hidden;
+      }
+      .feature::before{
+        content:"";
+        position:absolute;
+        width: 180px;
+        height: 120px;
+        border-radius: 120px;
+        top: -60px;
+        right: -70px;
+        background: rgba(255,255,255,.018);
+        pointer-events:none;
+      }
+      .featureTitle{
+        margin: 0;
+        font-weight: 900;
+        font-size: 13px;
+      }
+      .featureBody{
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      /* footer */
+      footer{
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255,255,255,.06);
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 12px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .footLinks{
+        display:flex;
+        gap: 10px;
+        flex-wrap:wrap;
+      }
+
+      /* modal */
+      .modalBackdrop{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.55);
+        display:none;
+        align-items:center;
+        justify-content:center;
+        padding: 16px;
+        z-index: 50;
+      }
+      .modal{
+        width: min(560px, 100%);
+        background: #0a111b;
+        border: 1px solid rgba(255,255,255,.09);
+        border-radius: 22px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+      .modal h3{
+        margin: 0;
+        font-weight: 900;
+        font-size: 15px;
+      }
+      .modal p{
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .modal ul{
+        margin: 10px 0 0;
+        padding-left: 16px;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .modalActions{
+        margin-top: 14px;
+        display:flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .srOnly{
+        position:absolute;
+        width:1px;height:1px;
+        padding:0;margin:-1px;
+        overflow:hidden;clip:rect(0,0,0,0);
+        white-space:nowrap;border:0;
       }
     </style>
   </head>
 
   <body>
+    <div class="bg"></div>
+    <div class="grain"></div>
+
     <div class="wrap">
-      <header class="topbar">
+      <!-- NAV -->
+      <div class="nav">
         <a class="brand" href="#top" aria-label="Vitalscope home">
-          <span class="brandMark" aria-hidden="true">
-            <img src="vitalscope-logo.png" alt="" />
-          </span>
-          <span class="brandText">
-            <span class="name">Vitalscope™</span>
-            <span class="tag">Your health, in focus</span>
-          </span>
+          <div class="mark" aria-hidden="true">
+            <div class="markCore">
+              <img src="vitalscope-logo.png" alt="" />
+            </div>
+          </div>
+          <div class="brandText">
+            <div class="brandName">Vitalscope</div>
+            <div class="brandTag">Your health, in focus</div>
+          </div>
         </a>
 
-        <nav class="nav" aria-label="Primary">
-          <a class="chipLink" href="#what">What it is</a>
-          <a class="chipLink" href="#how">How it works</a>
-          <a class="chipLink" href="#privacy">Privacy</a>
-          <a class="chipLink" href="#faq">FAQ</a>
-          <a class="chipCTA" href="#early" id="openWaitlist">
-            <span>Early access</span>
-            <span style="opacity: 0.75">→</span>
+        <div class="navLinks">
+          <a class="pill" href="#how">
+            <span class="dot" aria-hidden="true"></span>
+            How it feels
           </a>
-        </nav>
-      </header>
+          <a class="pill" href="#signals">Key signals</a>
+          <a class="pill" href="#faq">FAQ</a>
+          <a class="pill" href="#get">Get updates</a>
+        </div>
+      </div>
 
-      <main id="top" class="layout">
-        <!-- LEFT COLUMN -->
-        <section class="stack" aria-label="Overview">
-          <div class="greeting">
-            <h1>Understand your patterns—without pressure.</h1>
-            <p>
-              Vitalscope quietly observes signals like sleep, movement, heart rate, glucose and more.
-              Over time it learns what “steady” looks like for you—then helps you notice gentle shifts
-              in rhythm.
+      <!-- HERO -->
+      <section id="top" class="hero">
+        <div class="panel heroLeft">
+          <div class="lensGlowA"></div>
+          <div class="lensGlowB"></div>
+
+          <div class="eyebrow">Meaning first • numbers second</div>
+          <h1>A calmer way to understand your daily rhythm.</h1>
+          <p class="subhead">
+            Vitalscope quietly observes your signals, learns your baseline, and offers gentle,
+            practical supports — without pressure language, streaks, or performance anxiety.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn" href="#get">
+              <span class="dot" aria-hidden="true"></span>
+              Join the waitlist
+            </a>
+            <button class="btn btnSecondary" id="openWhy" type="button">
+              Why Vitalscope feels different
+            </button>
+          </div>
+
+          <div class="micro">
+            Built for long-term understanding — not short-term motivation. Your baseline is yours.
+          </div>
+        </div>
+
+        <aside class="panel heroRight" aria-label="Vitalscope Today preview">
+          <div class="miniHeader">
+            <div>
+              <div class="miniGreet" id="greeting">Hello</div>
+              <div class="miniDate" id="dateLine">—</div>
+            </div>
+            <div class="miniPill">
+              <span class="dot" aria-hidden="true"></span>
+              Suggested pace
+            </div>
+          </div>
+
+          <div class="miniInsight">
+            <div class="miniTitle">Vitalscope insight</div>
+            <p class="miniBody">
+              Today looks fairly even — we’ll keep gently observing your baseline.
             </p>
-
-            <div class="actionsRow">
-              <button class="btn btnPrimary" type="button" id="openWaitlist2">Request early access</button>
-              <a class="btn" href="#faq">Read the FAQ</a>
+            <div class="divider"></div>
+            <div class="miniMetaRow">
+              <div class="miniTitle" style="margin:0">Rhythm stability</div>
+              <div class="miniMetaBig">Fairly steady</div>
             </div>
-
-            <div class="pillRow" aria-label="Highlights">
-              <span class="pill"><i aria-hidden="true"></i> No streaks</span>
-              <span class="pill"><i aria-hidden="true"></i> No alarms</span>
-              <span class="pill"><i aria-hidden="true"></i> No “perfect days”</span>
-            </div>
+            <p class="miniMetaSub">
+              Recent sleep, movement, and night rhythm look consistent.
+            </p>
           </div>
 
-          <!-- Insight-style tile -->
-          <div class="card" id="what">
-            <div class="cardHeader">
-              <div class="title">Vitalscope insight</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> Calm by design</div>
-            </div>
-            <div class="cardInner">
-              <h2 class="tileTitle">A quiet observer.</h2>
-              <p class="tileBody">
-                Vitalscope isn’t here to grade your day. It starts by learning your baseline, then
-                surfaces calm, readable insights as patterns emerge—so you can respond with awareness.
-              </p>
-
-              <div class="divider"></div>
-
-              <div class="chips" aria-label="What it offers">
-                <span class="chip chipStrong">Baseline-first</span>
-                <span class="chip">Pattern-aware</span>
-                <span class="chip">Built for real life</span>
+          <div class="tiles" id="signals">
+            <div class="tile">
+              <div class="sweepA"></div><div class="sweepB"></div>
+              <div class="tileTop">
+                <div class="tileTitle">Rest</div>
+                <span class="dot" aria-hidden="true"></span>
               </div>
+              <div class="tileBig">7h 12m</div>
+              <div class="tileSub">Last night</div>
+              <div class="tileRange">About 6–8 h</div>
+              <div class="barTrack"><div class="barFill" style="width:72%"></div></div>
             </div>
-          </div>
 
-          <!-- How it works tile -->
-          <div class="card" id="how">
-            <div class="cardHeader">
-              <div class="title">How it works</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> Suggested pace</div>
-            </div>
-            <div class="cardInner">
-              <h2 class="tileTitle">Three calm steps.</h2>
-              <p class="tileBody">
-                1) Connect Apple Health or Health Connect. 2) Let Vitalscope learn your steady rhythm.
-                3) When patterns drift, it highlights context—without alarm language.
-              </p>
-
-              <div class="chips" style="margin-top: 14px" aria-label="Steps">
-                <span class="chip">Connect your data</span>
-                <span class="chip">Learn your baseline</span>
-                <span class="chip">Notice gentle shifts</span>
+            <div class="tile">
+              <div class="sweepA"></div><div class="sweepB"></div>
+              <div class="tileTop">
+                <div class="tileTitle">Night low HR</div>
               </div>
+              <div class="tileBig">52 bpm</div>
+              <div class="tileSub">During main sleep</div>
+              <div class="tileRange">Comfortable range: 49–55 bpm</div>
+              <div class="barTrack"><div class="barFill" style="width:64%"></div></div>
             </div>
-          </div>
 
-          <!-- Privacy tile -->
-          <div class="card" id="privacy">
-            <div class="cardHeader">
-              <div class="title">Privacy</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> You stay in control</div>
-            </div>
-            <div class="cardInner">
-              <h2 class="tileTitle">Designed to feel safe.</h2>
-              <p class="tileBody">
-                Your health data should feel private and respected. Vitalscope is designed around
-                minimal collection and a calm approach to permissions. We don’t sell personal health
-                information.
-              </p>
-
-              <div class="chips" style="margin-top: 14px" aria-label="Privacy principles">
-                <span class="chip chipStrong">No selling data</span>
-                <span class="chip">Minimal permissions</span>
-                <span class="chip">Clear choices</span>
+            <div class="tile">
+              <div class="sweepA"></div><div class="sweepB"></div>
+              <div class="tileTop">
+                <div class="tileTitle">Movement</div>
+                <span class="dot" aria-hidden="true"></span>
               </div>
-            </div>
-          </div>
-
-          <!-- FAQ tile -->
-          <div class="card" id="faq" aria-label="FAQ">
-            <div class="cardHeader">
-              <div class="title">FAQ</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> Quick answers</div>
-            </div>
-            <div class="cardInner">
-              <div class="faq">
-                <details>
-                  <summary>
-                    Does Vitalscope replace medical advice?
-                    <span class="chev" aria-hidden="true"></span>
-                  </summary>
-                  <div class="faqBody">
-                    No. Vitalscope is for awareness and reflection. It can help you notice patterns,
-                    but it isn’t a medical device and doesn’t diagnose conditions. If something feels
-                    concerning, it’s always okay to speak with a clinician.
-                  </div>
-                </details>
-
-                <details>
-                  <summary>
-                    Do I need a wearable?
-                    <span class="chev" aria-hidden="true"></span>
-                  </summary>
-                  <div class="faqBody">
-                    Not necessarily. If your phone or connected apps write data to Apple Health or
-                    Health Connect, Vitalscope can use it. Wearables can improve detail, but they’re optional.
-                  </div>
-                </details>
-
-                <details>
-                  <summary>
-                    How long does it take to learn my baseline?
-                    <span class="chev" aria-hidden="true"></span>
-                  </summary>
-                  <div class="faqBody">
-                    Often you’ll see useful patterns within 1–2 weeks. Some insights become clearer with
-                    a bit more time, especially if your data is irregular.
-                  </div>
-                </details>
-
-                <details>
-                  <summary>
-                    Will it work with Samsung Health, Fitbit, Garmin?
-                    <span class="chev" aria-hidden="true"></span>
-                  </summary>
-                  <div class="faqBody">
-                    If your provider syncs into Health Connect (Android) or Apple Health (iOS), then yes.
-                    Vitalscope reads what’s available in those hubs.
-                  </div>
-                </details>
-
-                <details>
-                  <summary>
-                    Is my data private?
-                    <span class="chev" aria-hidden="true"></span>
-                  </summary>
-                  <div class="faqBody">
-                    Vitalscope is designed to minimize collection and keep control with you. We do not sell
-                    personal health information. (We can add a full Privacy Policy page later.)
-                  </div>
-                </details>
-              </div>
-            </div>
-          </div>
-
-          <!-- Early access tile -->
-          <div class="card" id="early">
-            <div class="cardHeader">
-              <div class="title">Early access</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> If helpful</div>
-            </div>
-            <div class="cardInner">
-              <h2 class="tileTitle">Join the early group.</h2>
-              <p class="tileBody">
-                If you’d like updates or a test invite, leave your email. We’ll keep it light—no
-                pressure, no spam.
-              </p>
-
-              <div class="actionsRow" style="margin-top: 14px">
-                <button class="btn btnPrimary" type="button" id="openWaitlist3">Request early access</button>
-                <a class="btn" href="#top">Back to top</a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- RIGHT COLUMN (app-like “summary” rail) -->
-        <aside class="stack" aria-label="Brand panel">
-          <div class="card">
-            <div class="cardHeader">
-              <div class="title">Vitalscope</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> Your health, in focus</div>
-            </div>
-            <div class="cardInner" style="display: grid; gap: 12px; place-items: center; text-align: center">
-              <img
-                src="vitalscope-logo.png"
-                alt="Vitalscope logo"
-                style="width: min(260px, 70vw); height: auto; object-fit: contain"
-              />
-              <p class="tileBody" style="max-width: 40ch">
-                A calm, steady way to see your signals over time—designed to reduce noise and avoid pressure.
-              </p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="cardHeader">
-              <div class="title">What you’ll see</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> Key signals</div>
-            </div>
-            <div class="cardInner">
-              <div class="chips" aria-label="Signals">
-                <span class="chip chipStrong">Rest & sleep</span>
-                <span class="chip">Night HR</span>
-                <span class="chip">Movement</span>
-                <span class="chip">Glucose</span>
-                <span class="chip">Blood pressure</span>
-                <span class="chip">Weight trends</span>
-              </div>
-
-              <div class="divider"></div>
-
-              <p class="tileBody">
-                Vitalscope is built around steady context—not one-off spikes. The goal is clarity, not perfection.
-              </p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="cardHeader">
-              <div class="title">Gentle actions</div>
-              <div class="badge"><span class="badgeDot" aria-hidden="true"></span> Suggested</div>
-            </div>
-            <div class="cardInner">
-              <div class="chips" aria-label="Examples">
-                <span class="chip">Hydration check</span>
-                <span class="chip">Short easy walk</span>
-                <span class="chip">1 minute slow breathing</span>
-                <span class="chip">Wind-down</span>
-                <span class="chip">Sunlight</span>
-              </div>
-              <p class="tileBody" style="margin-top: 12px">
-                These are small supports—optional, and designed to feel non-anxiety-inducing.
-              </p>
+              <div class="tileBig">4,380</div>
+              <div class="tileSub">Steps today</div>
+              <div class="tileRange">Comfortable by now: 3,200–5,400</div>
+              <div class="barTrack"><div class="barFill" style="width:58%"></div></div>
             </div>
           </div>
         </aside>
-      </main>
+      </section>
+
+      <!-- HOW IT FEELS -->
+      <section id="how" class="section">
+        <div class="sectionHead">
+          <div>
+            <p class="kicker">Temperament</p>
+            <h2 class="h2">Calm, observant, and quietly useful.</h2>
+          </div>
+          <a class="pill" href="#get" aria-label="Join the waitlist">
+            <span class="dot" aria-hidden="true"></span>
+            Get updates
+          </a>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="rowTop">
+              <h3 class="title">Your baseline, not population averages</h3>
+              <span class="pill"><span class="dot" aria-hidden="true"></span> Personal</span>
+            </div>
+            <p class="body">
+              Vitalscope learns what “steady” looks like for you, then highlights gentle
+              deviations as simple context — not judgment.
+            </p>
+            <div class="chips" aria-label="Highlights">
+              <span class="chip">No pressure language</span>
+              <span class="chip">Patterns over time</span>
+              <span class="chip">Quiet confidence</span>
+            </div>
+          </div>
+
+          <div class="card cardAlt">
+            <div class="rowTop">
+              <h3 class="title">Meaning first, numbers second</h3>
+              <span class="pill">Brief</span>
+            </div>
+            <p class="body">
+              Each day starts with a single calm sentence: what looks steady, what shifted,
+              and what might feel supportive.
+            </p>
+            <p class="body" style="margin-top:10px; color: var(--faint); font-weight: 800;">
+              No streaks. No “red days”. Just small supports when you want them.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="section" aria-label="Features">
+        <div class="sectionHead">
+          <div>
+            <p class="kicker">What you’ll see</p>
+            <h2 class="h2">A Today view that reads like an instrument — not a dashboard.</h2>
+          </div>
+        </div>
+
+        <div class="featureList">
+          <div class="feature">
+            <h3 class="featureTitle">Vitalscope insight</h3>
+            <p class="featureBody">
+              One breathable headline that reflects your recent rhythm — steady, mixed, or still learning —
+              with context that stays calm.
+            </p>
+          </div>
+
+          <div class="feature">
+            <h3 class="featureTitle">Rhythm stability</h3>
+            <p class="featureBody">
+              A simple read on steadiness over the last couple weeks — helpful for noticing routine shifts,
+              travel, stress, or recovery arcs.
+            </p>
+          </div>
+
+          <div class="feature">
+            <h3 class="featureTitle">Key signals</h3>
+            <p class="featureBody">
+              Rest, night rhythm, movement (and your chosen focus lens) presented with soft ranges and gentle progress,
+              never gamified.
+            </p>
+          </div>
+
+          <div class="feature">
+            <h3 class="featureTitle">If helpful</h3>
+            <p class="featureBody">
+              Calm, practical options: a short walk, water, one minute of breathing — framed as supports,
+              not “tasks.”
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUOTE -->
+      <section class="section" aria-label="Quiet note">
+        <div class="card cardAlt">
+          <p class="quote">
+            “Vitalscope is built for people who want clarity without pressure —
+            a steady mirror of your health signals, not a louder coach.”
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="section">
+        <div class="sectionHead">
+          <div>
+            <p class="kicker">FAQ</p>
+            <h2 class="h2">A few quick answers.</h2>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3 class="title">Does Vitalscope give medical advice?</h3>
+            <p class="body">
+              No. It highlights trends and gentle context from your own data. Any “pattern noticed” copy is
+              descriptive — not diagnostic.
+            </p>
+          </div>
+          <div class="card">
+            <h3 class="title">Will it shame me for a bad day?</h3>
+            <p class="body">
+              No. Language stays neutral and supportive. The app focuses on steadiness, variation, and recovery pacing —
+              without “fail” states.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- GET UPDATES -->
+      <section id="get" class="section">
+        <div class="sectionHead">
+          <div>
+            <p class="kicker">Get updates</p>
+            <h2 class="h2">Join the waitlist.</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="rowTop">
+            <h3 class="title">A calm launch note, when it’s ready</h3>
+            <span class="pill"><span class="dot" aria-hidden="true"></span> No spam</span>
+          </div>
+
+          <p class="body">
+            Leave your email and we’ll send one quiet message for the first release.
+          </p>
+
+          <form id="waitlistForm" style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <label class="srOnly" for="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder="you@example.com"
+              style="
+                flex: 1 1 260px;
+                min-width: 240px;
+                padding: 12px 14px;
+                border-radius: 16px;
+                background: rgba(255,255,255,.02);
+                border: 1px solid rgba(255,255,255,.08);
+                color: rgba(240,245,252,.92);
+                outline: none;
+                font-weight: 800;
+              "
+            />
+            <button class="btn" type="submit">
+              <span class="dot" aria-hidden="true"></span>
+              Join
+            </button>
+          </form>
+
+          <div id="formNote" class="micro" style="margin-top:10px;"></div>
+        </div>
+      </section>
 
       <footer>
-        <div>© <span id="year"></span> Vitalscope™. Your health, in focus.</div>
-        <div class="footerLinks">
-          <a href="#privacy">Privacy</a>
-          <a href="#faq">FAQ</a>
-          <a href="mailto:hello@vitalscope.app">Contact</a>
+        <div>© <span id="year"></span> Vitalscope Wellness</div>
+        <div class="footLinks">
+          <a class="pill" href="#top">Back to top</a>
+          <a class="pill" href="#faq">FAQ</a>
         </div>
       </footer>
     </div>
 
-    <!-- Waitlist modal -->
-    <div class="modalBackdrop" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal" role="document" aria-label="Request early access">
-        <div class="modalHeader">
-          <div>
-            <h4>Request early access</h4>
-            <p>Leave an email and we’ll reach out when invites are available. No pressure, no spam.</p>
-          </div>
-          <button class="closeX" type="button" id="closeModal" aria-label="Close">✕</button>
-        </div>
-
-        <div class="modalBody">
-          <form id="waitlistForm">
-            <div class="field">
-              <label for="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                inputmode="email"
-                autocomplete="email"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-
-            <div class="modalActions">
-              <button class="btn btnPrimary" type="submit">Send</button>
-              <button class="btn" type="button" id="closeModal2">Not now</button>
-            </div>
-
-            <div class="note" id="formNote">
-              This form doesn’t submit anywhere yet. Next, we’ll wire it to your Laravel backend.
-            </div>
-          </form>
+    <!-- Modal -->
+    <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal">
+        <h3 id="modalTitle">Why these suggestions?</h3>
+        <p>
+          We compare your recent rhythm to your own baseline and highlight gentle supports when signals look steady,
+          mixed, or when patterns have a bit more variation. These suggestions don’t change your data — they’re simply
+          calm options that often feel supportive.
+        </p>
+        <ul>
+          <li>Your baseline, not population averages</li>
+          <li>Meaning first, numbers second</li>
+          <li>No pressure language</li>
+        </ul>
+        <div class="modalActions">
+          <button class="btn" id="closeWhy" type="button">Close</button>
+          <a class="btn btnSecondary" href="#get">Get updates</a>
         </div>
       </div>
     </div>
 
     <script>
-      const $ = (id) => document.getElementById(id);
-      $("year").textContent = new Date().getFullYear();
+      // Time-aware greeting + date (simple, calm)
+      (function(){
+        const now = new Date();
+        const h = now.getHours();
+        const greet = h < 12 ? "Good morning" : (h < 18 ? "Good afternoon" : "Good evening");
+        const date = now.toLocaleDateString(undefined, { weekday:"long", day:"numeric", month:"short" });
 
-      const modal = $("modal");
-      const openButtons = ["openWaitlist", "openWaitlist2", "openWaitlist3"].map((id) => $(id));
-      const closeButtons = ["closeModal", "closeModal2"].map((id) => $(id));
+        const gEl = document.getElementById("greeting");
+        const dEl = document.getElementById("dateLine");
+        if (gEl) gEl.textContent = greet;
+        if (dEl) dEl.textContent = date;
 
-      function openModal() {
-        modal.classList.add("open");
-        modal.setAttribute("aria-hidden", "false");
-        setTimeout(() => $("email")?.focus(), 50);
-      }
+        const y = document.getElementById("year");
+        if (y) y.textContent = String(now.getFullYear());
+      })();
 
-      function closeModal() {
-        modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
-      }
+      // Modal: "Why these suggestions?"
+      (function(){
+        const openBtn = document.getElementById("openWhy");
+        const closeBtn = document.getElementById("closeWhy");
+        const backdrop = document.getElementById("modalBackdrop");
 
-      openButtons.forEach((b) =>
-        b && b.addEventListener("click", (e) => (e.preventDefault(), openModal()))
-      );
-      closeButtons.forEach((b) => b && b.addEventListener("click", closeModal));
+        function open(){
+          if (!backdrop) return;
+          backdrop.style.display = "flex";
+        }
+        function close(){
+          if (!backdrop) return;
+          backdrop.style.display = "none";
+        }
 
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-      });
+        if (openBtn) openBtn.addEventListener("click", open);
+        if (closeBtn) closeBtn.addEventListener("click", close);
+        if (backdrop) {
+          backdrop.addEventListener("click", (e) => {
+            if (e.target === backdrop) close();
+          });
+        }
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") close();
+        });
+      })();
 
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-      });
+      // Waitlist: local-only demo handler (replace with your backend)
+      (function(){
+        const form = document.getElementById("waitlistForm");
+        const note = document.getElementById("formNote");
+        if (!form) return;
 
-      $("waitlistForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = $("email").value.trim();
-        if (!email) return;
-
-        $("formNote").textContent =
-          "Thanks — noted. Next we’ll connect this to the backend so you can collect emails.";
-        $("email").value = "";
-        setTimeout(closeModal, 700);
-      });
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const email = (document.getElementById("email") || {}).value || "";
+          if (!note) return;
+          note.textContent = email
+            ? "Noted. We’ll send a calm update when it’s ready."
+            : "Please enter an email.";
+        });
+      })();
     </script>
   </body>
 </html>
