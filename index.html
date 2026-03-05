@@ -72,6 +72,7 @@
         color: var(--text);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        font-size: 16px; /* ✅ slightly larger baseline */
       }
 
       a {
@@ -102,24 +103,27 @@
         min-width: 0;
       }
 
+      /* ✅ Bigger, more visible top-left logo + slightly stronger contrast */
       .brand img {
-        width: 42px;
-        height: 42px;
+        width: 56px;
+        height: 56px;
         object-fit: contain;
-        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+        filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.60));
       }
 
+      /* ✅ Larger brand name */
       .brand .name {
-        font-weight: 650;
-        letter-spacing: 0.2px;
-        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        font-size: 20px;
         line-height: 1.1;
         white-space: nowrap;
       }
 
+      /* ✅ Larger tagline */
       .brand .tag {
-        font-size: 12px;
-        color: var(--muted);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.72);
         margin-top: 2px;
         white-space: nowrap;
       }
@@ -132,10 +136,12 @@
         justify-content: flex-end;
       }
 
+      /* ✅ Larger nav links for readability */
       .navlinks a {
-        font-size: 13px;
+        font-size: 15px;
+        font-weight: 500;
         color: var(--soft);
-        padding: 9px 10px;
+        padding: 10px 12px;
         border-radius: 999px;
         border: 1px solid transparent;
         background: transparent;
@@ -200,17 +206,21 @@
         .heroInner {
           grid-template-columns: 1fr;
         }
+        .nav {
+          flex-wrap: wrap;
+        }
       }
 
+      /* ✅ Slightly larger kicker */
       .kicker {
         display: inline-flex;
         gap: 10px;
         align-items: center;
-        font-size: 12px;
+        font-size: 13px;
         color: var(--soft);
         border: 1px solid rgba(255, 255, 255, 0.14);
         background: rgba(0, 0, 0, 0.14);
-        padding: 8px 12px;
+        padding: 9px 12px;
         border-radius: 999px;
         width: fit-content;
         backdrop-filter: blur(6px);
@@ -226,16 +236,17 @@
 
       h1 {
         margin: 14px 0 10px;
-        font-size: clamp(30px, 4.2vw, 44px);
-        line-height: 1.08;
-        letter-spacing: -0.6px;
+        font-size: clamp(34px, 4.4vw, 52px); /* ✅ bigger headline range */
+        line-height: 1.14; /* ✅ more breathing room */
+        letter-spacing: -0.8px;
       }
 
+      /* ✅ Bigger hero paragraph */
       .subhead {
         margin: 0;
-        max-width: 55ch;
-        font-size: 15px;
-        line-height: 1.55;
+        max-width: 60ch;
+        font-size: 18px;
+        line-height: 1.65;
         color: var(--soft);
       }
 
@@ -243,20 +254,21 @@
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
-        margin-top: 16px;
+        margin-top: 18px;
       }
 
+      /* ✅ Slightly bigger buttons */
       .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 12px 14px;
+        padding: 13px 16px;
         border-radius: 14px;
         border: 1px solid rgba(255, 255, 255, 0.14);
         background: rgba(0, 0, 0, 0.18);
         color: var(--text);
-        font-size: 14px;
+        font-size: 15px;
         cursor: pointer;
         user-select: none;
       }
@@ -279,20 +291,21 @@
         border-color: rgba(74, 235, 216, 0.44);
       }
 
+      /* ✅ Bigger pills */
       .mini {
         margin-top: 14px;
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
         color: var(--muted);
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .mini span {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 10px;
+        padding: 9px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.10);
         background: rgba(255, 255, 255, 0.03);
@@ -322,7 +335,7 @@
       }
 
       .logoBig img {
-        width: min(240px, 62vw);
+        width: min(260px, 70vw); /* ✅ a touch bigger */
         height: auto;
         object-fit: contain;
       }
@@ -339,7 +352,7 @@
         display: flex;
         gap: 10px;
         align-items: flex-start;
-        padding: 10px 12px;
+        padding: 12px 12px;
         border-radius: 14px;
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.10);
@@ -370,27 +383,29 @@
         opacity: 0.85;
       }
 
+      /* ✅ Bigger list text */
       .heroList b {
         display: block;
-        font-size: 13px;
-        font-weight: 650;
+        font-size: 14px;
+        font-weight: 700;
         margin-bottom: 3px;
       }
 
       .heroList p {
         margin: 0;
         color: var(--muted);
-        font-size: 12.5px;
-        line-height: 1.35;
+        font-size: 14px;
+        line-height: 1.45;
       }
 
       /* Sections */
       section {
-        margin-top: 26px;
+        margin-top: 28px;
       }
 
+      /* ✅ Bigger section titles */
       .sectionTitle {
-        font-size: 14px;
+        font-size: 16px;
         color: var(--soft);
         letter-spacing: 0.2px;
         margin: 0 0 12px;
@@ -421,19 +436,21 @@
         border-radius: var(--radius);
         border: 1px solid rgba(255, 255, 255, 0.10);
         background: rgba(255, 255, 255, 0.04);
-        padding: 16px;
+        padding: 18px;
       }
 
+      /* ✅ Larger card titles */
       .card h3 {
         margin: 0 0 8px;
-        font-size: 14px;
+        font-size: 16px;
         letter-spacing: -0.1px;
       }
 
+      /* ✅ Larger card body */
       .card p {
         margin: 0;
-        font-size: 13px;
-        line-height: 1.55;
+        font-size: 15px;
+        line-height: 1.65;
         color: var(--muted);
       }
 
@@ -444,16 +461,17 @@
         margin-top: 12px;
       }
 
+      /* ✅ Larger signal pills */
       .pill {
         display: inline-flex;
         gap: 8px;
         align-items: center;
-        padding: 8px 10px;
+        padding: 10px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.10);
         background: rgba(0, 0, 0, 0.14);
         color: var(--soft);
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .pill .spark {
@@ -477,6 +495,7 @@
         padding: 12px 14px;
       }
 
+      /* ✅ Larger FAQ summary */
       summary {
         list-style: none;
         cursor: pointer;
@@ -484,9 +503,9 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        font-size: 14px;
+        font-size: 16px;
         color: var(--text);
-        font-weight: 600;
+        font-weight: 650;
       }
 
       summary::-webkit-details-marker {
@@ -508,11 +527,12 @@
         transform: rotate(225deg);
       }
 
+      /* ✅ Larger FAQ body */
       .faqBody {
         margin-top: 10px;
         color: var(--muted);
-        font-size: 13px;
-        line-height: 1.6;
+        font-size: 15px;
+        line-height: 1.7;
       }
 
       .faqBody a {
@@ -532,7 +552,7 @@
         align-items: center;
         justify-content: space-between;
         color: var(--muted);
-        font-size: 12px;
+        font-size: 13px; /* ✅ slightly bigger */
       }
 
       .footerLinks {
@@ -543,7 +563,7 @@
       }
 
       .footerLinks a {
-        padding: 8px 10px;
+        padding: 9px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.10);
         background: rgba(255, 255, 255, 0.03);
@@ -590,15 +610,15 @@
 
       .modalHeader h4 {
         margin: 0;
-        font-size: 14px;
+        font-size: 16px; /* ✅ bigger */
         letter-spacing: -0.2px;
       }
 
       .modalHeader p {
         margin: 6px 0 0;
         color: var(--muted);
-        font-size: 12.5px;
-        line-height: 1.4;
+        font-size: 14px; /* ✅ bigger */
+        line-height: 1.5;
       }
 
       .closeX {
@@ -609,7 +629,7 @@
         border-radius: 12px;
         padding: 8px 10px;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 14px;
       }
 
       .closeX:hover {
@@ -629,7 +649,7 @@
 
       label {
         color: var(--soft);
-        font-size: 12px;
+        font-size: 13px; /* ✅ bigger */
       }
 
       input {
@@ -640,7 +660,7 @@
         background: rgba(0, 0, 0, 0.18);
         color: var(--text);
         outline: none;
-        font-size: 14px;
+        font-size: 15px; /* ✅ bigger */
       }
 
       input:focus {
@@ -658,8 +678,8 @@
       .note {
         margin-top: 10px;
         color: rgba(255, 255, 255, 0.52);
-        font-size: 11.5px;
-        line-height: 1.45;
+        font-size: 12.5px; /* ✅ bigger */
+        line-height: 1.55;
       }
     </style>
   </head>
